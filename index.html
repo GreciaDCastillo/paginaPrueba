@@ -2,9 +2,8 @@
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>MindAR Face - Ajuste de Mascara</title>
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-face-aframe.prod.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
     <style>
       body { margin: 0; overflow: hidden; }
     </style>
@@ -12,42 +11,32 @@
   <body>
 
     <a-scene 
-      mindar-face="userFill: false; uiScanning: no; filterMinCF:0.001; filterBeta: 0.1;" 
-      embedded 
+      mindar-image="imageTargetSrc: ./targets.mind; filterMinCF:0.0001; filterBeta: 0.001;" 
       color-space="sRGB" 
       renderer="colorManagement: true, physicallyCorrectLights" 
       vr-mode-ui="enabled: false" 
       device-orientation-permission-ui="enabled: false">
-      
+
       <a-assets>
-        <a-asset-item id="mascaraModel" src="./mascara.glb"></a-asset-item>
+        <a-asset-item id="coheteModel" src="./cohete.glb"></a-asset-item>
       </a-assets>
 
-      <a-camera active="false" position="0 0 0" look-controls="enabled: false"></a-camera>
+      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-      <a-entity mindar-face-target="anchorIndex: 168">
-        <a-gltf-model 
-          src="#mascaraModel" 
-          rotation="0 0 -90" 
-          position="0 0.05 0"  scale="0.5 0.5 0.5">
-        </a-gltf-model>
+      <a-entity mindar-image-target="targetIndex: 0">
+        
+        <a-entity id="wrapper" rotation="0 0 0" position="0 0 0">
+          <a-gltf-model 
+            src="#coheteModel" 
+            rotation="90 0 0" 
+            position="0 0 0.1" 
+            scale="0.2 0.2 0.2"
+            animation="property: rotation; to: 90 360 0; dur: 10000; easing: linear; loop: true">
+          </a-gltf-model>
+        </a-entity>
+
       </a-entity>
 
     </a-scene>
-
-
-    <script>
-      // Script para forzar la cámara trasera
-      document.addEventListener("DOMContentLoaded", () => {
-        const sceneEl = document.querySelector('a-scene');
-        sceneEl.addEventListener('viewready', () => {
-          const controller = sceneEl.systems["mindar-face-system"].controller;
-          controller.videoConfig = {
-            facingMode: 'environment',
-            mirrored: false
-          };
-        });
-      });
-    </script>
   </body>
 </html>
